@@ -27,10 +27,8 @@ jobs:
 
     - name: Build with Maven
       working-directory: YelpEaBack
-    # package = test puis jar
       run: mvn -B package --file pom.xml
-
-    # Upload the JAR file as an artifact
+  
     - name: Upload JAR as artifact
       uses: actions/upload-artifact@v4
       with:
@@ -43,15 +41,18 @@ jobs:
     needs: backend
 
     steps:
-      - name: Checkout du code
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # Download the JAR artifact from the previous job
       - name: Download JAR artifact
         uses: actions/download-artifact@v4
         with:
           name: backend-jar
-          path: YelpEaBack/target
+          path: ./YelpEaBack/build-output
+
+      - name: Rename JAR to app.jar
+        run: |
+          mv ./YelpEaBack/build-output/*.jar ./YelpEaBack/app.jar
 
     # docker build
       - name: Build Docker image
