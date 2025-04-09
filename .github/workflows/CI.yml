@@ -185,6 +185,7 @@ jobs:
 
       - name: Prepare Docker context
         run: |
+          mkdir -p ./YelpEaFront/dist-app
           mv ./YelpEaFront/dist/* ./YelpEaFront/dist-app
 
       - name: Build & Push Frontend Image
