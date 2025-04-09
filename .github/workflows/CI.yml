@@ -231,9 +231,9 @@ jobs:
 
       - name: Créer le fichier .env
         run: |
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
           echo "DB_ROOT_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
 
       - name: Lancer docker-compose
         run: docker compose --env-file .env up -d --build
