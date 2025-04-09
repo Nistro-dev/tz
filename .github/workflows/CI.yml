@@ -28,6 +28,13 @@ jobs:
     # package = test puis jar
       run: mvn -B package --file pom.xml
 
+    # Upload the JAR file as an artifact
+    - name: Upload JAR as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: backend-jar
+        path: YelpEaBack/target/*.jar
+
   docker-backend:
     name: Build Docker Image for Backend
     runs-on: ubuntu-latest
@@ -36,6 +43,13 @@ jobs:
     steps:
       - name: Checkout du code
         uses: actions/checkout@v3
+
+      # Download the JAR artifact from the previous job
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-jar
+          path: YelpEaBack/target
 
     # docker build
       - name: Build Docker image
