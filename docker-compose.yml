@@ -1,41 +1,35 @@
 version: "3.8"
 
-services: # nom des services en minuscules
-  YelpEaFront:
-    image: front #lien docker hub front
-    ports:
-      - 8081:8081 #machine:conteneur
-      
+services:
 
-  YelpEaBack:
-    image: back #lien docker hub back
+  yelp-ea-front:
+    image: maelmichaud/angular-frontend:latest
     ports:
-      - 8080:8080 #machine:conteneur
-    depends_on: # indique le DB doit être UP avant de lancer le conteneur
+      - "8081:80"
+
+  yelp-ea-back:
+    image: maelmichaud/java-backend:latest
+    ports:
+      - "8080:8080"
+    depends_on:
       mysqldb:
         condition: service_healthy
 
-  mysqldb: # alias réseau, 
-    image: mysql:8.0  #image à lancerports:
+  mysqldb:
+    image: mysql:8.0
     ports:
-      - 3314:3314
-    volumes: # on ne peut écrire pas dans un conteneur => allow un volume
+      - "3314:3306"
+    volumes:
       - msg-mysql-data:/var/lib/mysql
     environment:
-      MYSQL_USER: $${{secrets.DB_ROOT_USERNAME}}
-      MYSQL_ROOT_PASSWORD: $${{secrets.DB_ROOT_PASSWORD}}
-      MYSQL_DATABASE: $${{secrets.DB_DATABASE}}
-    
-          #Vérification que la base est bien up 
+      MYSQL_USER: ${DB_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-
-
-
-
-volumes:  # volume persistant
+volumes:
   msg-mysql-data:
