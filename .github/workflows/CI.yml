@@ -200,7 +200,6 @@ jobs:
             maelmichaud/angular-frontend:${{ needs.create-release-tag.outputs.release_tag }}
 
   docker-compose-test:
-    if: ${{ github.event_name == 'pull_request' && github.base_ref == 'main' }}
     name: Test de l'intégration Docker Compose
     runs-on: ubuntu-latest
     needs: [build-and-push-images, create-release-tag]
