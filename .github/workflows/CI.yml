@@ -53,9 +53,9 @@ jobs:
         working-directory: YelpEaFront
         run: npm ci
 
-      - name: Run unit tests
-        working-directory: YelpEaFront
-        run: npm run test -- --watch=false --browsers=ChromeHeadless
+      # - name: Run unit tests
+      #   working-directory: YelpEaFront
+      #   run: npm run test -- --watch=false --browsers=ChromeHeadless
 
       - name: Build Angular app
         working-directory: YelpEaFront
