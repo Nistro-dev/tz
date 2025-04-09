@@ -8,7 +8,7 @@ on:
 
 jobs:
   backend:
-
+    name: Build and Test Backend
     runs-on: ubuntu-latest
 
     steps:
@@ -28,24 +28,20 @@ jobs:
     # package = test puis jar
       run: mvn -B package --file pom.xml
 
-    # install Docker
-    - name: Docker install avec action
-      run: |
-          sudo apt-get update
-          sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-          sudo apt-get update
-          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-          sudo docker -- version
+  docker-backend:
+    name: Build Docker Image for Backend
+    runs-on: ubuntu-latest
+    needs: backend
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v3
 
     # docker build
-    - name: Build Docker image
-      working-directory: YelpEaBack
-      run: |
-        docker build -t back .
-    # docker login -> action
-    # run docker push
+      - name: Build Docker image
+        working-directory: YelpEaBack
+        run: |
+          docker build -t back .
 
 #frontend:
  # install angular
@@ -53,3 +49,14 @@ jobs:
  # test selenium
  # docker login -> action
  # run docker push
+
+     # install Docker
+    #  - name: Docker install avec action
+    #  run: |
+    #      sudo apt-get update
+    #      sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+    #      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    #      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    #      sudo apt-get update
+    #      sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+    #      sudo docker -- version
